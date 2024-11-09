@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.tutopedia.backend.services.oci.OciStorageException;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({TutorialNotFoundException.class})
@@ -34,5 +36,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({BucketDuplicateException.class})
     protected ResponseEntity<Object> handleBucketDuplicate(Exception e, WebRequest request) {
     	return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler({OciStorageException.class})
+    protected ResponseEntity<Object> handleOCIException(Exception e, WebRequest request) {
+    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }
