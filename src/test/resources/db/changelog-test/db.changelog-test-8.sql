@@ -1,0 +1,1 @@
+CREATE TABLE setting (id BIGINT, tkey VARCHAR(50), tvalue VARCHAR(255), PRIMARY KEY (id))
