@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Setting;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.repository.BucketRepository;
+import com.tutopedia.backend.persistence.repository.SettingRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 import java.lang.Iterable;
 import java.util.Optional;
@@ -18,7 +20,9 @@ public class QueryService {
 	@Autowired
 	private BucketRepository bucketRepository;
 
-
+	@Autowired
+	private SettingRepository settingRepository;
+	
 	public Iterable<Tutorial> findAllTutorials() {
 		return tutorialRepository.findAll();
 	}
@@ -59,6 +63,18 @@ public class QueryService {
 			return Optional.of(bucket);
 		}
 		
+		return Optional.empty();
+	}
+	
+	public Optional<Setting> findSettingByKey(String key) {
+		Setting setting = settingRepository.findByKey(key);
+		
+		if (setting != null) {
+			System.out.println("FIND SETTING OK => " + setting.getValue());
+			return Optional.of(setting);
+		}
+		
+		System.out.println("FIND SETTING NOK => NULL");
 		return Optional.empty();
 	}
 }

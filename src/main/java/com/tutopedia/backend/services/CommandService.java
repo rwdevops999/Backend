@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.tutopedia.backend.persistence.data.TutorialWithFile;
 import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Setting;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.persistence.repository.BucketRepository;
+import com.tutopedia.backend.persistence.repository.SettingRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 
 @Service
@@ -22,6 +24,9 @@ public class CommandService {
 
 	@Autowired
 	private FileStorageService fileStorageService;
+
+	@Autowired
+	private SettingRepository settingRepository;
 
 	public Tutorial saveTutorial(Tutorial tutorial) {
 		return tutorialRepository.save(tutorial);
@@ -74,5 +79,9 @@ public class CommandService {
 	public void updateDefaultBucketId(long id) {
 		bucketRepository.clearDefaultBuckets();
 		bucketRepository.updateDefaultBucketId(id);
+	}
+	
+	public void persistSetting(Setting setting) {
+		settingRepository.save(setting);
 	}
 }

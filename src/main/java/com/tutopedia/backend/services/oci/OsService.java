@@ -2,7 +2,10 @@ package com.tutopedia.backend.services.oci;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,13 +25,49 @@ import com.oracle.bmc.objectstorage.responses.GetNamespaceResponse;
 import com.oracle.bmc.objectstorage.transfer.UploadConfiguration;
 import com.oracle.bmc.objectstorage.transfer.UploadManager;
 import com.oracle.bmc.objectstorage.transfer.UploadManager.UploadRequest;
+import com.tutopedia.backend.persistence.model.Setting;
+import com.tutopedia.backend.services.CommandService;
+import com.tutopedia.backend.services.QueryService;
+
+import enums.SettingKeys;
 
 @Service
 public class OsService {
 	// Path to OCI configuration file
-    final String configurationFilePath = "config";
+    final String configurationFilePath = "~/.oci/config";
     final String profile = "DEFAULT";
 
+    @Autowired
+    CommandService commandService;
+    
+    @Autowired
+    QueryService queryService;
+    
+    public void initialize() throws IOException {
+        final ConfigFileReader.ConfigFile 
+        configFile = ConfigFileReader
+        .parse(configurationFilePath, profile);
+
+        Setting setting;
+        Optional<Setting> dbSetting = queryService.findSettingByKey(SettingKeys.TENANT.getKey());
+        if (dbSetting.isEmpty()) {
+        	setting = new Setting(SettingKeys.TENANT.getKey());
+        } else {
+        	setting = dbSetting.get();
+        }
+        setting.setValue(configFile.get("tenancy"));
+    	commandService.persistSetting(setting);
+        
+        dbSetting = queryService.findSettingByKey(SettingKeys.REGION.getKey());
+        if (dbSetting.isEmpty()) {
+            setting = new Setting(SettingKeys.REGION.getKey());
+        } else {
+        	setting = dbSetting.get();
+        }
+    	setting.setValue(configFile.get("region"));
+        commandService.persistSetting(setting);
+    }
+    
     public ObjectStorage getObjectStorage() throws IOException {
         
         // load configuration file
