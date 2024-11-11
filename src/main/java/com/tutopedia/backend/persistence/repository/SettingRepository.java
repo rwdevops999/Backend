@@ -8,6 +8,5 @@ import com.tutopedia.backend.persistence.model.Setting;
 
 @Repository
 public interface SettingRepository extends CrudRepository<Setting, Long> {
-//	@Query("select s from Setting s where s.key = :key")
 	Setting findByKey(String key);
 }
