@@ -5,7 +5,7 @@ BRANCH: master
 
 # JENKINS API KEY
 
-116b062654828edb7ac1cd5c2a226401c4
+1114ea564b09e53b49ec59e2cec29ccd1f
 
 # JENKINS JOB
 
@@ -13,7 +13,9 @@ Pipeline: Backend
 
 # SMEE
 
-https://smee.io/iV5FO2eQUwSKVTX
-smee -t http://localhost:9000/github-webhook -u https://smee.io/iV5FO2eQUwSKVTX
+https://smee.io/rfhcFt8ajDD8fu
+smee -t http://localhost:9000/github-webhook/ -u https://smee.io/rfhcFt8ajDD8fu
 
 # GITHIB
+
+Done(ok)
