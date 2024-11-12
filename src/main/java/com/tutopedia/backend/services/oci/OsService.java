@@ -58,6 +58,7 @@ public class OsService {
         }
         setting.setValue(configFile.get("tenancy"));
         System.out.println("===== PERSIST TENANCY =====");
+        System.out.println(configFile.get("tenancy"));
     	commandService.persistSetting(setting);
         
         dbSetting = queryService.findSettingByKey(SettingKeys.REGION.getKey());
@@ -68,6 +69,7 @@ public class OsService {
         }
     	setting.setValue(configFile.get("region"));
         System.out.println("===== PERSIST REGION =====");
+        System.out.println(configFile.get("region"));
         commandService.persistSetting(setting);
     }
     
