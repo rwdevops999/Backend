@@ -114,19 +114,6 @@ pipeline {
 					docker push ${USER}/${IMAGE}
 				'''
 			}
-			
-			post {
-			    success {
-			    sh '''
-			        echo 'remove ${IMAGE}'
-					docker rmi --force $(docker images -q ${IMAGE} | uniq)
-			        echo 'remove ${USER}/${IMAGE}'
-					docker rmi --force $(docker images -q ${USER}/${IMAGE} | uniq)
-				'''
-			    }
-
-			}
-
 		}
 	}
 	
