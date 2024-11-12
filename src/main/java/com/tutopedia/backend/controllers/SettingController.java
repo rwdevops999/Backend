@@ -36,7 +36,7 @@ import org.springframework.util.StringUtils;
 
 @RestController
 @RequestMapping(path = "/api/settings")
-@CrossOrigin(origins = {"http://localhost:3000", "*"})
+@CrossOrigin(origins = {"http://localhost:5173", "*"})
 public class SettingController {
 	@Autowired
 	private QueryService queryService;

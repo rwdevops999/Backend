@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 
 @RestController
 @RequestMapping(path = "/api")
-@CrossOrigin(origins = {"http://localhost:3000", "*"})
+@CrossOrigin(origins = {"http://localhost:5173", "*"})
 public class TutorialController {
 	@Autowired
 	private CommandService commandService;

@@ -26,7 +26,7 @@ import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(path = "/api/bucket")
-@CrossOrigin(origins = {"http://localhost:3000", "*"})
+@CrossOrigin(origins = {"http://localhost:5173", "*"})
 public class BucketController {
 	@Autowired
 	private CommandService commandService;
