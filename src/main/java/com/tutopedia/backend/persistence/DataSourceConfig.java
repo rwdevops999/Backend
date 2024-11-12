@@ -49,6 +49,9 @@ public class DataSourceConfig {
 		System.out.println("HOST     : " + host);
 		System.out.println("PORT     : " + port);
 		System.out.println("DATABASE : " + database);
+
+		String url="jdbc:postgresql://"+host+":"+port+"/"+database;
+		System.out.println("URL      : " + url);
 		
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
