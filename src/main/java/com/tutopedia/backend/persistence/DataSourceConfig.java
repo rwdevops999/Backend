@@ -39,12 +39,12 @@ public class DataSourceConfig {
 
         return dataSource;
     }
-	
+/*	
 	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
 		System.out.println("===== INIT DEV DB =====");
-/*		System.out.println("USER     : " + user);
+		System.out.println("USER     : " + user);
 		System.out.println("PASSWORD : " + password);
 		System.out.println("HOST     : " + host);
 		System.out.println("PORT     : " + port);
@@ -52,16 +52,17 @@ public class DataSourceConfig {
 
 		String url="jdbc:postgresql://"+host+":"+port+"/"+database;
 		System.out.println("URL      : " + url);
-*/		
+		
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url("jdbc:postgresql://localhost:5432/tutopedia_db");
         dataSourceBuilder.username("postgres");
         dataSourceBuilder.password("admin");
-/*        dataSourceBuilder.url(url);
+        dataSourceBuilder.url(url);
         dataSourceBuilder.username(user);
         dataSourceBuilder.password(password);
-*/
+
         return dataSourceBuilder.build();
     }
+*/
 }
