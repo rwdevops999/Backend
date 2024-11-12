@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@Configuration
+//@Configuration
 public class DataSourceConfig {
 /*	@Value("${db_user:postgres}")
 	private String user;
@@ -25,7 +25,7 @@ public class DataSourceConfig {
 	
 	@Value("${db_database:tutopedia_db}")
 	private String database;
-*/	
+	
 	@Profile("test")
 	@Bean
     public DataSource dataSource() {
@@ -39,7 +39,7 @@ public class DataSourceConfig {
 
         return dataSource;
     }
-/*	
+	
 	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
