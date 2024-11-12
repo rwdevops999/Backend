@@ -17,6 +17,7 @@ pipeline {
 		stage("info") {
 			steps {
 				build job: 'Dockerdown'
+
 			    sh 'mvn -v'
 			    sh 'docker -v'
 			}
