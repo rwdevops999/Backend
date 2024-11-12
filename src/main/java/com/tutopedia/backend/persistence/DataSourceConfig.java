@@ -17,7 +17,7 @@ public class DataSourceConfig {
 	@Value("${db_password:admin}")
 	private String password;
 	
-	@Value("${db_host:localhost}")
+	@Value("${db_host:db}")
 	private String host;
 	
 	@Value("${db_port:5432}")
@@ -55,7 +55,7 @@ public class DataSourceConfig {
 		
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url("jdbc:postgresql://"+host+":"+port+"/"+database);
+        dataSourceBuilder.url(url);
         dataSourceBuilder.username(user);
         dataSourceBuilder.password(password);
 
