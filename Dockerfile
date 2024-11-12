@@ -6,7 +6,7 @@
 ###################################################
 
 ## Take the ECLIPSE TEMURIN Image as base image (it includes JDK)
-FROM eclipse-temurin:17.0.13_11-jre-focal AS base
+FROM openjdk:17.0.2 AS base
 
 ## create a directory for our application code
 WORKDIR /app
