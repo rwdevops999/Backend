@@ -55,9 +55,6 @@ public class DataSourceConfig {
 		
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
-/*        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/tutopedia_db");
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("admin"); */
         dataSourceBuilder.url(url);
         dataSourceBuilder.username(user);
         dataSourceBuilder.password(password);
