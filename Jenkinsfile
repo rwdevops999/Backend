@@ -51,6 +51,7 @@ pipeline {
 			}
 
 			steps {
+				sh 'export spring_profiles_active=test'	    
 				sh 'mvn test'	    
 			}
 			
