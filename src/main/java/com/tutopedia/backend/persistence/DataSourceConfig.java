@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-//@Configuration
+@Configuration
 public class DataSourceConfig {
 	@Value("${db_user:postgres}")
 	private String user;
