@@ -11,13 +11,13 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 //@Configuration
 public class DataSourceConfig {
-/*	@Value("${db_user:postgres}")
+	@Value("${db_user:postgres}")
 	private String user;
 	
 	@Value("${db_password:admin}")
 	private String password;
 	
-	@Value("${db_host:db}")
+	@Value("${db_host:postgres}")
 	private String host;
 	
 	@Value("${db_port:5432}")
@@ -55,14 +55,13 @@ public class DataSourceConfig {
 		
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/tutopedia_db");
+/*        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/tutopedia_db");
         dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("admin");
+        dataSourceBuilder.password("admin"); */
         dataSourceBuilder.url(url);
         dataSourceBuilder.username(user);
         dataSourceBuilder.password(password);
 
         return dataSourceBuilder.build();
     }
-*/
 }
