@@ -48,6 +48,7 @@ public class OsService {
         configFile = ConfigFileReader
         .parse(configurationFilePath, profile);
 
+        System.out.println("===== INIT OCI =====");
         Setting setting;
         Optional<Setting> dbSetting = queryService.findSettingByKey(SettingKeys.TENANT.getKey());
         if (dbSetting.isEmpty()) {
@@ -56,6 +57,7 @@ public class OsService {
         	setting = dbSetting.get();
         }
         setting.setValue(configFile.get("tenancy"));
+        System.out.println("===== PERSIST TENANCY =====");
     	commandService.persistSetting(setting);
         
         dbSetting = queryService.findSettingByKey(SettingKeys.REGION.getKey());
@@ -65,6 +67,7 @@ public class OsService {
         	setting = dbSetting.get();
         }
     	setting.setValue(configFile.get("region"));
+        System.out.println("===== PERSIST REGION =====");
         commandService.persistSetting(setting);
     }
     
