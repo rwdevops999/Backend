@@ -21,19 +21,28 @@ import jakarta.transaction.Transactional;
 @Service
 public class FileStorageService {
 	@Autowired
-	private TutorialFileRepository tutorialFileRepository;
+	private TutorialFileRepository fileRepository;
 
-	@Autowired
-	private QueryService queryService;
+	public TutorialFile saveTutorialFile(TutorialFile file) {
+		return fileRepository.save(file);
+	}
 
-	@Autowired
-	private CommandService commandService;
+	public void deleteByTutorialId(Long tid) {
+		TutorialFile fileDB = fileRepository.findByTutorialId(tid);
+		if (fileDB != null) {
+			fileRepository.deleteById(fileDB.getId());
+		}
+	}
 
-	public Optional<TutorialFile> store(Long tid, MultipartFile file) {
+	public void deleteAll() {
+		fileRepository.deleteAll();
+	}
+
+	public Optional<TutorialFile> create(Long tid, MultipartFile file) {
 		try {
 			TutorialFile fileDB = new TutorialFile(tid, file.getContentType(), file.getBytes());
 
-			return Optional.of(tutorialFileRepository.save(fileDB));
+			return Optional.of(fileRepository.save(fileDB));
 		} catch (IOException ioe) {
 			return Optional.empty();
 		}
@@ -41,56 +50,15 @@ public class FileStorageService {
 	
 	@Transactional	// needed for LOB
 	public Optional<TutorialFile> update(Long tid, MultipartFile file) {
-		TutorialFile fileDB = tutorialFileRepository.findByTutorialId(tid);
+		TutorialFile fileDB = fileRepository.findByTutorialId(tid);
 	    
 		try {
 		    fileDB.setFileContent(file.getBytes());
 	
-		    return Optional.of(tutorialFileRepository.save(fileDB));
+		    return Optional.of(fileRepository.save(fileDB));
 		} catch (IOException ioe) {
 			return Optional.empty();
 		}
 	}
 	
-	public void deleteAll() {
-		tutorialFileRepository.deleteAll();
-	}
-	
-	public void deleteFileByTutorialId(Long tid) {
-		TutorialFile fileDB = tutorialFileRepository.findByTutorialId(tid);
-		if (fileDB != null) {
-			tutorialFileRepository.deleteById(fileDB.getId());
-		}
-	}
-	
-	public void publishFile(Tutorial tutorial) {
-		if (! tutorial.isPublished()) {
-			// PUBLISH FILE HERE TO OCI
-			
-			Bucket bucket = queryService.findDefaultBucket().orElseThrow(BucketNotFoundException::new);
-			
-			TutorialFile file = queryService.findTutorialFileByTutorialId(tutorial.getId()).orElseThrow(TutorialFileNotFoundException::new);
-			file.setBucketid(bucket.getId());
-			commandService.saveTutorialFile(file);
-			
-			bucket.setTutorials(bucket.getTutorials());
-			commandService.saveBucket(bucket);
-			
-			tutorial.setPublished(true);
-			commandService.saveTutorial(tutorial);
-		}
-	}
-	
-	public void publishFile(Long tutorialId) {
-		Tutorial tutorial = queryService.findTutorialById(tutorialId).orElseThrow(TutorialNotFoundException::new);
-
-		publishFile(tutorial);
-	}
-
-	public void publishAllFiles() {
-		Iterable<Tutorial> tutorials = queryService.findTutorialsByPublishedFlag(false);
-		for (Tutorial tutorial : tutorials) {
-			publishFile(tutorial);
-		}
-	}
 }

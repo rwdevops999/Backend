@@ -24,6 +24,7 @@ import com.tutopedia.backend.persistence.data.TutorialWithFile;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.services.CommandService;
 import com.tutopedia.backend.services.FileStorageService;
+import com.tutopedia.backend.services.PublishService;
 import com.tutopedia.backend.services.QueryService;
 
 import jakarta.validation.constraints.NotNull;
@@ -44,7 +45,10 @@ public class TutorialController {
 	private QueryService queryService;
 
 	@Autowired
-	private FileStorageService fileService;
+	private FileStorageService fileStorageService;
+	
+	@Autowired 
+	private PublishService publishService;
 	
 	private void log(String command) {
 		Date currentDate = new Date();
@@ -129,34 +133,19 @@ public class TutorialController {
 
 		String fileName = StringUtils.cleanPath(tutorialWithFile.getTutorialFile().getOriginalFilename());
 
-		Tutorial tutorial = commandService.saveTutorial(new Tutorial(
+		Tutorial tutorial = commandService.createTutorial(new Tutorial(
 			tutorialWithFile.getTitle(), 
 			tutorialWithFile.getDescription(), 
         	tutorialWithFile.getPublished(),
         	fileName
         ));
 
-		commandService.saveFile(tutorial.getId(), tutorialWithFile).orElseThrow(FilePersistException::new);
+		fileStorageService.create(tutorial.getId(), tutorialWithFile.getTutorialFile()).orElseThrow(FilePersistException::new);
 
 		return tutorial;
 	}
 	
 	// UPDATE
-/*	@PutMapping(path = "/update/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	@ResponseStatus(HttpStatus.OK)
-	public Tutorial updateTutorialById(@PathVariable(name = "id") @NotNull Long id, @RequestBody Tutorial tutorial) {
-		log("updateTutorialById: " + id);
-		
-		if (tutorial.getId() != id) {
-			throw new TutorialIdMismatchException();
-		}
-		
-		queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
-		
-		return commandService.saveTutorial(tutorial);
-	}
-*/
-	
 	@PutMapping("/update/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public Tutorial updateTutorialById(@PathVariable(name = "id") @NotNull Long id, @ModelAttribute @NotNull TutorialWithFile tutorialWithFile) {
@@ -168,12 +157,11 @@ public class TutorialController {
 		tutorial.setDescription(tutorialWithFile.getDescription());
 
 		if (tutorialWithFile.getTutorialFile() != null) {
-			System.out.println("UPDATE FILE");
 			tutorial.setFilename(StringUtils.cleanPath(tutorialWithFile.getTutorialFile().getOriginalFilename()));
-			commandService.updateFile(id, tutorialWithFile).orElseThrow(FilePersistException::new);
+			fileStorageService.update(id, tutorialWithFile.getTutorialFile()).orElseThrow(FilePersistException::new);
 		}
 		
-		return commandService.saveTutorial(tutorial);
+		return commandService.updateTutorial(tutorial);
 	}
 
 	// PUBLISH
@@ -182,8 +170,7 @@ public class TutorialController {
 	public void publishAllTutorials() {
 		log("publishAllTutorials");
 		
-		fileService.publishAllFiles();
-//		commandService.publishAllTutorials();
+		publishService.publishAllFiles();
 	}
 
 	@PutMapping("/publish/{id}")
@@ -191,10 +178,7 @@ public class TutorialController {
 	public void publishTutorialById(@PathVariable(name = "id") @NotNull Long id) {
 		log("publishTutorialById: " + id);
 
-		fileService.publishFile(id);
-//		queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
-
-//		commandService.publishTutorialById(id);
+		publishService.publishFileByTutorialId(id);
 	}
 
     @PutMapping("/publish/ids")
@@ -204,8 +188,7 @@ public class TutorialController {
     	
 		for (String sid : ids.values()) {
 			Long id = Long.parseLong(sid);
-			queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
-			commandService.publishTutorialById(id);
+			publishService.publishFileByTutorialId(id);
 		}
     }
 
@@ -215,7 +198,7 @@ public class TutorialController {
 	public void deleteAllTutorials() {
 		log("deleteAllTutorials");
     	
-		commandService.deleteAllFiles();
+		fileStorageService.deleteAll();
 		commandService.deleteAllTutorials();
     }
 
@@ -227,7 +210,7 @@ public class TutorialController {
 		queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
 
 		commandService.deleteTutorialById(id);
-		commandService.deleteFileByTutorialId(id);
+		fileStorageService.deleteByTutorialId(id);
     }
 
     @DeleteMapping("/delete/ids")                                                                                                                    
@@ -239,7 +222,7 @@ public class TutorialController {
 			Long id = Long.parseLong(sid);
 			queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
 			commandService.deleteTutorialById(id);
-			commandService.deleteFileByTutorialId(id);
+			fileStorageService.deleteByTutorialId(id);
 		}
     }
-    }
+}

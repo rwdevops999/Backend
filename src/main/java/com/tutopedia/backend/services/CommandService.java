@@ -24,16 +24,21 @@ public class CommandService {
 	private BucketRepository bucketRepository;
 
 	@Autowired
-	private FileStorageService fileStorageService;
-
-	@Autowired
 	private SettingRepository settingRepository;
 
 	@Autowired
 	private TutorialFileRepository fileRepository;
 
-	public Tutorial saveTutorial(Tutorial tutorial) {
+	private Tutorial persistTutorial(Tutorial tutorial) {
 		return tutorialRepository.save(tutorial);
+	}
+	
+	public Tutorial createTutorial(Tutorial tutorial) {
+		return persistTutorial(tutorial);
+	}
+	
+	public Tutorial updateTutorial(Tutorial tutorial) {
+		return persistTutorial(tutorial);
 	}
 	
 	public void publishAllTutorials() {
@@ -50,22 +55,6 @@ public class CommandService {
 
 	public void deleteTutorialById(long id) {
 		tutorialRepository.deleteById(id);
-	}
-	
-	public Optional<TutorialFile> saveFile(long tutorialId, TutorialWithFile tutorial) {
-		return fileStorageService.store(tutorialId, tutorial.getTutorialFile());
-	}
-
-	public Optional<TutorialFile> updateFile(long tutorialId, TutorialWithFile tutorial) {
-		return fileStorageService.update(tutorialId, tutorial.getTutorialFile());
-	}
-
-	public void deleteAllFiles() {
-		fileStorageService.deleteAll();;
-	}
-
-	public void deleteFileByTutorialId(long tutorialId) {
-		fileStorageService.deleteFileByTutorialId(tutorialId);
 	}
 	
 	public void deleteAllBuckets() {
@@ -92,9 +81,4 @@ public class CommandService {
 	public void persistSetting(Setting setting) {
 		settingRepository.save(setting);
 	}
-
-	public TutorialFile saveTutorialFile(TutorialFile file) {
-		return fileRepository.save(file);
-	}
-
 }
