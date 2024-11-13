@@ -16,12 +16,17 @@ pipeline {
 	stages {
 		stage("info") {
 			steps {
-				build job: 'Dockerdown'
-
 			    sh 'mvn -v'
 			    sh 'docker -v'
 			}
+		}
 
+		stage("init") {
+			steps {
+				build job: 'DockerCompose', parameters: [
+					[ string(name: 'COMPOSE', value: 'DOWN' ), wait: true ] 
+				]
+			}
 		}
 		
 		stage("clean") {
@@ -116,6 +121,28 @@ pipeline {
 					docker push ${USER}/${IMAGE}
 				'''
 			}
+
+			post {
+				failure {
+				    script {
+    				    isValid = false
+    				}
+				}
+			}
+		}
+
+		stage("finalize") {
+			when {
+		    	expression {
+		        	isValid
+    			}
+		  	}
+
+		  	steps {
+				build job: 'DockerCompose', parameters: [
+					[ string(name: 'COMPOSE', value: 'UP' ) ], wait: true 
+				]
+		  	}
 		}
 	}
 	
