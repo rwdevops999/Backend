@@ -24,7 +24,7 @@ pipeline {
 		stage("init") {
 			steps {
 				build job: 'DockerCompose', parameters: [
-					[ string(name: 'COMPOSE', value: 'DOWN' ), wait: true ] 
+					[ string(name: 'COMPOSE', value: 'DOWN' ) ], wait: true 
 				]
 			}
 		}
