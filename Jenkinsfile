@@ -1,4 +1,4 @@
-@Library("shared-library@main") _
+@Library("shared-library@1.0") _
 
 def isValid = true;
 
