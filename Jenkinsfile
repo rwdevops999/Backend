@@ -23,7 +23,7 @@ pipeline {
 
 		stage("init") {
 			steps {
-				build job: 'DockerCompose', parameters: string(name: 'COMPOSE', value: 'DOWN' ), wait: true 
+				build job: 'DockerCompose', parameters: [string(name: 'COMPOSE', value: 'DOWN' )], wait: true 
 			}
 		}
 		
@@ -137,7 +137,7 @@ pipeline {
 		  	}
 
 		  	steps {
-				build job: 'DockerCompose', parameters: string(name: 'COMPOSE', value: 'UP' ), wait: true 
+				build job: 'DockerCompose', parameters: [string(name: 'COMPOSE', value: 'UP' )], wait: true 
 		  	}
 		}
 	}
