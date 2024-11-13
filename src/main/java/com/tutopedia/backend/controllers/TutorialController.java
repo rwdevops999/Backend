@@ -23,6 +23,7 @@ import com.tutopedia.backend.error.TutorialNotFoundException;
 import com.tutopedia.backend.persistence.data.TutorialWithFile;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.services.CommandService;
+import com.tutopedia.backend.services.FileStorageService;
 import com.tutopedia.backend.services.QueryService;
 
 import jakarta.validation.constraints.NotNull;
@@ -42,6 +43,9 @@ public class TutorialController {
 	@Autowired
 	private QueryService queryService;
 
+	@Autowired
+	private FileStorageService fileService;
+	
 	private void log(String command) {
 		Date currentDate = new Date();
 
@@ -178,7 +182,8 @@ public class TutorialController {
 	public void publishAllTutorials() {
 		log("publishAllTutorials");
 		
-		commandService.publishAllTutorials();
+		fileService.publishAllFiles();
+//		commandService.publishAllTutorials();
 	}
 
 	@PutMapping("/publish/{id}")
@@ -186,9 +191,10 @@ public class TutorialController {
 	public void publishTutorialById(@PathVariable(name = "id") @NotNull Long id) {
 		log("publishTutorialById: " + id);
 
-		queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
+		fileService.publishFile(id);
+//		queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new);
 
-		commandService.publishTutorialById(id);
+//		commandService.publishTutorialById(id);
 	}
 
     @PutMapping("/publish/ids")
