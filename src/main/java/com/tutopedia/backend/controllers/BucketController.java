@@ -68,7 +68,7 @@ public class BucketController {
 	public Bucket findDefaultBucket() {
 		log("findDefaultBucket");
 		
-		return queryService.findDefaultBucket();
+		return queryService.findDefaultBucket().orElseThrow(BucketNotFoundException::new);
 	}
 
 	// UPDATE

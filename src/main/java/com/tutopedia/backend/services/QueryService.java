@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import com.tutopedia.backend.persistence.model.Bucket;
 import com.tutopedia.backend.persistence.model.Setting;
 import com.tutopedia.backend.persistence.model.Tutorial;
+import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.persistence.repository.BucketRepository;
 import com.tutopedia.backend.persistence.repository.SettingRepository;
+import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 import java.lang.Iterable;
 import java.util.Optional;
@@ -22,6 +24,9 @@ public class QueryService {
 
 	@Autowired
 	private SettingRepository settingRepository;
+	
+	@Autowired
+	private TutorialFileRepository fileRepository;
 	
 	public Iterable<Tutorial> findAllTutorials() {
 		return tutorialRepository.findAll();
@@ -48,8 +53,14 @@ public class QueryService {
 		return bucketRepository.findAll();
 	}
 
-	public Bucket findDefaultBucket() {
-		return bucketRepository.findBySelected(true);
+	public Optional<Bucket> findDefaultBucket() {
+		Bucket bucket = bucketRepository.findBySelected(true);
+		
+		if (bucket != null) {
+			return Optional.of(bucket);
+		}
+		
+		return Optional.empty();
 	}
 
 	public Optional<Bucket> findBucketById(long id) {
@@ -75,6 +86,16 @@ public class QueryService {
 		}
 		
 		System.out.println("FIND SETTING NOK => NULL");
+		return Optional.empty();
+	}
+	
+	public Optional<TutorialFile> findTutorialFileByTutorialId(Long tutorialId) {
+		TutorialFile file = fileRepository.findByTutorialId(tutorialId);
+
+		if (file != null) {
+			return Optional.of(file);
+		}
+		
 		return Optional.empty();
 	}
 }

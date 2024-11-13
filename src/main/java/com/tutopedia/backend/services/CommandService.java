@@ -12,6 +12,7 @@ import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.persistence.repository.BucketRepository;
 import com.tutopedia.backend.persistence.repository.SettingRepository;
+import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 
 @Service
@@ -27,6 +28,9 @@ public class CommandService {
 
 	@Autowired
 	private SettingRepository settingRepository;
+
+	@Autowired
+	private TutorialFileRepository fileRepository;
 
 	public Tutorial saveTutorial(Tutorial tutorial) {
 		return tutorialRepository.save(tutorial);
@@ -72,8 +76,12 @@ public class CommandService {
 		bucketRepository.deleteById(id);
 	}
 
-	public Bucket createBucket(Bucket bucket) {
+	public Bucket saveBucket(Bucket bucket) {
 		return bucketRepository.save(bucket);
+	}
+
+	public Bucket createBucket(Bucket bucket) {
+		return saveBucket(bucket);
 	}
 
 	public void updateDefaultBucketId(long id) {
@@ -84,4 +92,9 @@ public class CommandService {
 	public void persistSetting(Setting setting) {
 		settingRepository.save(setting);
 	}
+
+	public TutorialFile saveTutorialFile(TutorialFile file) {
+		return fileRepository.save(file);
+	}
+
 }

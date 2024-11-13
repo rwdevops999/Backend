@@ -14,13 +14,13 @@ import com.tutopedia.backend.services.oci.OciStorageException;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({TutorialNotFoundException.class})
     protected ResponseEntity<Object> handleTutorialNotFound(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tutorial not found");
     }
 
     @ExceptionHandler({TutorialIdMismatchException.class, FilePersistException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<Object> handleTutorialIdMismatch(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tutorial mismatch");
     }
 
 //    @ExceptionHandler({FilePersistException.class})
@@ -30,16 +30,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({BucketNotFoundException.class})
     protected ResponseEntity<Object> handleBucketNotFound(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bucket not found");
     }
 
     @ExceptionHandler({BucketDuplicateException.class})
     protected ResponseEntity<Object> handleBucketDuplicate(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    	return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate bucket");
     }
 
     @ExceptionHandler({OciStorageException.class})
     protected ResponseEntity<Object> handleOCIException(Exception e, WebRequest request) {
     	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler({TutorialFileNotFoundException.class})
+    protected ResponseEntity<Object> handleTutorialFileNotFound(Exception e, WebRequest request) {
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tutorial File Not Found");
     }
 }
