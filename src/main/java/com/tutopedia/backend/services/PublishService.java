@@ -42,7 +42,7 @@ public class PublishService {
 			
 			fileRepository.save(file);
 			
-			bucket.setTutorials(bucket.getTutorials());
+			bucket.setTutorials(bucket.getTutorials()+1);
 			bucketRepository.save(bucket);
 			
 			tutorial.setPublished(true);
