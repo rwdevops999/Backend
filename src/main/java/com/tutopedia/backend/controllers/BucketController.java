@@ -2,6 +2,7 @@ package com.tutopedia.backend.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,6 +88,11 @@ public class BucketController {
     @ResponseStatus(HttpStatus.CREATED)
 		public Bucket createBucket(@ModelAttribute @NotNull Bucket bucket) {
 		log("createBucket");
+		
+		Optional<Bucket> defaultBucket = queryService.findDefaultBucket();
+		if (defaultBucket.isEmpty()) {
+			bucket.setSelected(true);
+		}
 		
 		queryService.findBucketByName(bucket.getName()).ifPresent(s -> {
             throw new BucketDuplicateException();
