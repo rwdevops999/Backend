@@ -47,6 +47,8 @@ public class PublishService {
 			
 			tutorial.setPublished(true);
 			tutorialRepository.save(tutorial);
+			
+			System.out.println("PUBLSIHED: Tutorial = " + tutorial.getId() + " to Bucket = " + bucket.getName());
 		}
 	}
 	
