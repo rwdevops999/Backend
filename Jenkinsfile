@@ -124,8 +124,8 @@ pipeline {
 			post {
 				success {
 				    sh '''
-				    	docker rmi ${IMAGE}:latest
-				    	docker rmi ${USER}/${IMAGE}:latest
+				    	docker rmi -f ${IMAGE}:latest
+				    	docker rmi -f ${USER}/${IMAGE}:latest
 				    '''
 				}
 
