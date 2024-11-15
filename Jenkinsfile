@@ -122,6 +122,13 @@ pipeline {
 			}
 
 			post {
+				success {
+				    sh '''
+				    	docker rmi ${IMAGE}:latest
+				    	docker rmi ${USER}/${IMAGE}:latest
+				    '''
+				}
+
 				failure {
 				    script {
     				    isValid = false
