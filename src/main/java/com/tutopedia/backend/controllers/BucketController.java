@@ -1,7 +1,9 @@
 package com.tutopedia.backend.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tutopedia.backend.error.BucketDuplicateException;
 import com.tutopedia.backend.error.BucketNotFoundException;
 import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.services.CommandService;
 import com.tutopedia.backend.services.QueryService;
 
@@ -118,4 +121,12 @@ public class BucketController {
     	
 		commandService.deleteAllBuckets();
     }
+	
+	@GetMapping("/{bucket}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Tutorial> getBucketTutorials(@PathVariable(name="bucket") @NotNull String name) {
+		System.out.println("GET TUTS OF BUCKET: " + name);
+		
+		return new ArrayList<Tutorial>();
+	}
 }
