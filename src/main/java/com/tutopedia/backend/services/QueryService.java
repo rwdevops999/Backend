@@ -12,6 +12,7 @@ import com.tutopedia.backend.persistence.repository.SettingRepository;
 import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 import java.lang.Iterable;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,16 @@ public class QueryService {
 	
 	public Optional<Tutorial> findTutorialById(long id) {
 		return tutorialRepository.findById(id);
+	}
+
+	public Tutorial findTutorialByIdRaw(long id) {
+		Optional<Tutorial> tutorial = tutorialRepository.findById(id);
+		
+		if (tutorial.isPresent()) {
+			return tutorial.get();
+		}
+		
+		return null;
 	}
 
 	public Iterable<Tutorial> findTutorialsByPublishedFlag(boolean isPublished) {
@@ -98,4 +109,9 @@ public class QueryService {
 		
 		return Optional.empty();
 	}
+
+	public List<TutorialFile> findTutorialFilesByBucketId(Long bucketId) {
+		return fileRepository.findByBucketId(bucketId);
+	}
 }
+

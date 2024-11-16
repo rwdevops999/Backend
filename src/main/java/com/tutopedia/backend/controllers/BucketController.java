@@ -23,6 +23,7 @@ import com.tutopedia.backend.error.BucketDuplicateException;
 import com.tutopedia.backend.error.BucketNotFoundException;
 import com.tutopedia.backend.persistence.model.Bucket;
 import com.tutopedia.backend.persistence.model.Tutorial;
+import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.services.CommandService;
 import com.tutopedia.backend.services.QueryService;
 
@@ -125,8 +126,14 @@ public class BucketController {
 	@GetMapping("/{bucket}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Tutorial> getBucketTutorials(@PathVariable(name="bucket") @NotNull String name) {
-		System.out.println("GET TUTS OF BUCKET: " + name);
-		
-		return new ArrayList<Tutorial>();
+		System.out.println("getBucketTutorials: " + name);
+
+		Bucket bucket = queryService.findBucketByName(name).orElseThrow(BucketNotFoundException::new);
+		List<TutorialFile> files = queryService.findTutorialFilesByBucketId(bucket.getId());
+		List<Tutorial> tutorials = files.stream().map((TutorialFile file) -> (queryService.findTutorialByIdRaw(file.getTutorialId()))).toList();
+
+		System.out.println("getBucketTutorials FOUND " + tutorials.size());
+
+		return tutorials;
 	}
 }
