@@ -10,5 +10,5 @@ import com.tutopedia.backend.persistence.model.TutorialFile;
 @Repository
 public interface TutorialFileRepository extends CrudRepository<TutorialFile, Long> {
 	TutorialFile findByTutorialId(long tid);
-	List<TutorialFile> findByBucketId(long bid);
+	List<TutorialFile> findByBucketid(long bid);
 }
