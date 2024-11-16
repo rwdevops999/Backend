@@ -111,7 +111,7 @@ public class QueryService {
 	}
 
 	public List<TutorialFile> findTutorialFilesByBucketId(Long bucketId) {
-		return fileRepository.findByBucketId(bucketId);
+		return fileRepository.findByBucketid(bucketId);
 	}
 }
 
