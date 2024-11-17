@@ -181,7 +181,7 @@ public class TutorialController {
 		
 		tutorials.stream().forEach((tutorial) -> System.out.println("unpublish" + tutorial.getFilename()));
 		
-//		publishService.publishAllFiles();
+		publishService.unpublishTutorials(tutorials);
 	}
 
 	@PutMapping("/publish/{id}")

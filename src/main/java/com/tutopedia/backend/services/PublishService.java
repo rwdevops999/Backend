@@ -1,5 +1,8 @@
 package com.tutopedia.backend.services;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +55,29 @@ public class PublishService {
 		}
 	}
 	
+	private void unpublishFileByTutorial(Tutorial tutorial) {
+		if (tutorial.isPublished()) {
+			// UNPUBLISH FILE HERE FROM OCI
+			
+			TutorialFile file = fileRepository.findByTutorialId(tutorial.getId());
+			if (file == null) {
+				throw new TutorialFileNotFoundException();
+			}
+
+			Bucket bucket = bucketRepository.findById(file.getBucketid()).orElseThrow(BucketNotFoundException::new);
+			bucket.setTutorials(bucket.getTutorials() - 1);
+			
+			file.setBucketid(null);
+			tutorial.setPublished(false);
+			
+			tutorialRepository.save(tutorial);
+			bucketRepository.save(bucket);
+			fileRepository.save(file);
+			
+			System.out.println("UNPUBLSIHED: Tutorial = " + tutorial.getId() + " from Bucket = " + bucket.getName());
+		}
+	}
+	
 	public void publishFileByTutorialId(Long tutorialId) {
 		Tutorial tutorial = tutorialRepository.findById(tutorialId).orElseThrow(TutorialNotFoundException::new);
 
@@ -60,8 +86,14 @@ public class PublishService {
 
 	public void publishAllFiles() {
 		Iterable<Tutorial> tutorials = tutorialRepository.findByPublished(false);
-		for (Tutorial tutorial : tutorials) {
+		
+		StreamSupport.stream(tutorials.spliterator(), false).forEach(tutorial -> publishFileByTutorial(tutorial));
+/*		for (Tutorial tutorial : tutorials) {
 			publishFileByTutorial(tutorial);
-		}
+		} */
+	}
+
+	public void unpublishTutorials(List<Tutorial> tutorials) {
+		tutorials.stream().forEach(tutorial -> unpublishFileByTutorial(tutorial));
 	}
 }
