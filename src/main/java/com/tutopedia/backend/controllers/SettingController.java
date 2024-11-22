@@ -27,6 +27,7 @@ import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.services.CommandService;
 import com.tutopedia.backend.services.QueryService;
 
+import enums.SettingKeys;
 import jakarta.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class SettingController {
 	public Setting findSettingByKey(@PathVariable(name = "key") @NotNull String key) {
 		log("findSettingByKey: " + key);
 
-		Optional<Setting> setting = queryService.findSettingByKey(key);
+		Optional<Setting> setting = queryService.findSettingByKeyAndType(key, SettingKeys.getTypeOf(key));
 	
 		if (setting.isEmpty()) {
 			return  null;
