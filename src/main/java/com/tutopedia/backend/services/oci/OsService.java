@@ -50,26 +50,24 @@ public class OsService {
 
         System.out.println("===== INIT OCI =====");
         Setting setting;
-        Optional<Setting> dbSetting = queryService.findSettingByKey(SettingKeys.TENANT.getKey());
+        Optional<Setting> dbSetting = queryService.findSettingByKeyAndType(SettingKeys.TENANT.getKey(), SettingKeys.TENANT.getType());
         if (dbSetting.isEmpty()) {
-        	setting = new Setting(SettingKeys.TENANT.getKey());
+        	setting = new Setting(SettingKeys.TENANT.getKey(), null, SettingKeys.TENANT.getType());
         } else {
         	setting = dbSetting.get();
         }
         setting.setValue(configFile.get("tenancy"));
-        setting.setType("OCI");
         System.out.println("===== PERSIST TENANCY =====");
         System.out.println(configFile.get("tenancy"));
     	commandService.persistSetting(setting);
         
-        dbSetting = queryService.findSettingByKey(SettingKeys.REGION.getKey());
+        dbSetting = queryService.findSettingByKeyAndType(SettingKeys.REGION.getKey(), SettingKeys.REGION.getType());
         if (dbSetting.isEmpty()) {
-            setting = new Setting(SettingKeys.REGION.getKey());
+            setting = new Setting(SettingKeys.REGION.getKey(), null, SettingKeys.REGION.getType());
         } else {
         	setting = dbSetting.get();
         }
     	setting.setValue(configFile.get("region"));
-        setting.setType("OCI");
         System.out.println("===== PERSIST REGION =====");
         System.out.println(configFile.get("region"));
         commandService.persistSetting(setting);

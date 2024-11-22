@@ -50,13 +50,14 @@ public class Setting {
 				+ "]";
 	}
 
-	public Setting(@Length(max = 50) String key, @Length(max = 255) String value) {
+	public Setting(@Length(max = 50) String key, @Length(max = 255) String value, @Length(max = 10) String type) {
 		this.id = 0;
 		this.key = key;
 		this.value = value;
+		this.type = type;
 	}
 
 	public Setting(@Length(max = 50) String key) {
-		this(key, null);
+		this(key, null, null);
 	}
 }

@@ -88,8 +88,8 @@ public class QueryService {
 		return Optional.empty();
 	}
 	
-	public Optional<Setting> findSettingByKey(String key) {
-		Setting setting = settingRepository.findByKey(key);
+	public Optional<Setting> findSettingByKeyAndType(String key, String type) {
+		Setting setting = settingRepository.findByKeyAndType(key, type);
 		
 		if (setting != null) {
 			System.out.println("FIND SETTING OK => " + setting.getValue());
