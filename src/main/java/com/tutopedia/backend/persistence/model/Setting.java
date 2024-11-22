@@ -34,12 +34,17 @@ public class Setting {
 	@Length(max = 255)
 	private String value;
 
+	@Column(name = "type", nullable = false)
+	@Getter @Setter 
+	@Length(max = 10)
+	private String type;
 	
 	@Override
 	public String toString() {
 		return "Setting "
 				+ "["
 				+ "id=" + id 
+				+ ", type=" + type
 				+ ", key=" + key
 				+ ", value=" + value
 				+ "]";

@@ -64,4 +64,18 @@ public class SettingController {
 		
 		return setting.get();
 	}
+
+	@GetMapping("/type/{type}")
+    @ResponseStatus(HttpStatus.OK)
+	public List<Setting> findSettingsByType(@PathVariable(name = "type") @NotNull String type) {
+		log("findSettingsByType: " + type);
+
+		List<Setting> settings = queryService.findSettingsByType(type);
+	
+		if (settings.isEmpty()) {
+			return  null;
+		}
+		
+		return settings;
+	}
 }

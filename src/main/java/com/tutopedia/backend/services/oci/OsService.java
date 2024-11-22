@@ -57,6 +57,7 @@ public class OsService {
         	setting = dbSetting.get();
         }
         setting.setValue(configFile.get("tenancy"));
+        setting.setType("OCI");
         System.out.println("===== PERSIST TENANCY =====");
         System.out.println(configFile.get("tenancy"));
     	commandService.persistSetting(setting);
@@ -68,6 +69,7 @@ public class OsService {
         	setting = dbSetting.get();
         }
     	setting.setValue(configFile.get("region"));
+        setting.setType("OCI");
         System.out.println("===== PERSIST REGION =====");
         System.out.println(configFile.get("region"));
         commandService.persistSetting(setting);

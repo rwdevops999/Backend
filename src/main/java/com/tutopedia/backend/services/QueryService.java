@@ -100,6 +100,12 @@ public class QueryService {
 		return Optional.empty();
 	}
 	
+	public List<Setting> findSettingsByType(String type) {
+		List<Setting> settings = settingRepository.findByType(type);
+		
+		return settings;
+	}
+	
 	public Optional<TutorialFile> findTutorialFileByTutorialId(Long tutorialId) {
 		TutorialFile file = fileRepository.findByTutorialId(tutorialId);
 
