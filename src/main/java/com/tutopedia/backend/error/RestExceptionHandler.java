@@ -47,4 +47,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleTutorialFileNotFound(Exception e, WebRequest request) {
     	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tutorial File Not Found");
     }
-}
+
+    @ExceptionHandler({InvalidSettingKeyException.class})
+    protected ResponseEntity<Object> handleInvalidSettingKey(Exception e, WebRequest request) {
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Key has invalid format");
+    }
+ }

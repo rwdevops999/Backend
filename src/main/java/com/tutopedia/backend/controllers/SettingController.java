@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tutopedia.backend.error.FilePersistException;
+import com.tutopedia.backend.error.InvalidSettingKeyException;
 import com.tutopedia.backend.error.TutorialNotFoundException;
 import com.tutopedia.backend.persistence.data.TutorialWithFile;
 import com.tutopedia.backend.persistence.model.Setting;
@@ -52,18 +53,23 @@ public class SettingController {
 		System.out.println("[" + currentDateTime + " : " + command + "]");
 	}
 
+	private String[] getValues (String key) {
+		try {
+			String[] values = key.split("_");
+			return values;
+		} catch  (Exception e) {
+			throw new InvalidSettingKeyException();
+		}
+	}
+	
 	@GetMapping("/{key}")
     @ResponseStatus(HttpStatus.OK)
 	public Setting findSettingByKey(@PathVariable(name = "key") @NotNull String key) {
 		log("findSettingByKey: " + key);
-
-		Optional<Setting> setting = queryService.findSettingByKeyAndType(key, SettingKeys.getTypeOf(key));
-	
-		if (setting.isEmpty()) {
-			return  null;
-		}
 		
-		return setting.get();
+		String[] result = getValues(key);
+		
+		return queryService.findSettingByKeyAndType(result[0], result[1]).get();
 	}
 
 	@GetMapping("/type/{type}")
