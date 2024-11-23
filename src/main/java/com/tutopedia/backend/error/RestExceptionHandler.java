@@ -23,19 +23,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tutorial mismatch");
     }
 
-//    @ExceptionHandler({FilePersistException.class})
-//    protected ResponseEntity<Object> handleFilePersistError(Exception e, WebRequest request) {
-//    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//    }
-
-    @ExceptionHandler({BucketNotFoundException.class})
-    protected ResponseEntity<Object> handleBucketNotFound(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bucket not found");
+    @ExceptionHandler({RepositoryNotFoundException.class})
+    protected ResponseEntity<Object> handleRepositoryNotFound(Exception e, WebRequest request) {
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Repository not found");
     }
 
-    @ExceptionHandler({BucketDuplicateException.class})
-    protected ResponseEntity<Object> handleBucketDuplicate(Exception e, WebRequest request) {
-    	return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate bucket");
+    @ExceptionHandler({RepositoryDuplicateException.class})
+    protected ResponseEntity<Object> handleRepositoryDuplicate(Exception e, WebRequest request) {
+    	return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate repository");
     }
 
     @ExceptionHandler({OciStorageException.class})

@@ -1,2 +1,2 @@
 ALTER TABLE file
-ADD bucketid BIGINT;
+ADD repositoryid BIGINT;

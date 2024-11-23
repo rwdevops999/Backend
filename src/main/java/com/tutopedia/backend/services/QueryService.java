@@ -3,11 +3,11 @@ package com.tutopedia.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Repository;
 import com.tutopedia.backend.persistence.model.Setting;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
-import com.tutopedia.backend.persistence.repository.BucketRepository;
+import com.tutopedia.backend.persistence.repository.RepositoryRepository;
 import com.tutopedia.backend.persistence.repository.SettingRepository;
 import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
@@ -21,7 +21,7 @@ public class QueryService {
 	private TutorialRepository tutorialRepository;
 
 	@Autowired
-	private BucketRepository bucketRepository;
+	private RepositoryRepository repoRepository;
 
 	@Autowired
 	private SettingRepository settingRepository;
@@ -60,29 +60,29 @@ public class QueryService {
 		
 	}
 
-	public Iterable<Bucket> findAllBuckets() {
-		return bucketRepository.findAll();
+	public Iterable<Repository> findAllRepositories() {
+		return repoRepository.findAll();
 	}
 
-	public Optional<Bucket> findDefaultBucket() {
-		Bucket bucket = bucketRepository.findBySelected(true);
+	public Optional<Repository> findDefaultRepository() {
+		Repository repository = repoRepository.findBySelected(true);
 		
-		if (bucket != null) {
-			return Optional.of(bucket);
+		if (repository != null) {
+			return Optional.of(repository);
 		}
 		
 		return Optional.empty();
 	}
 
-	public Optional<Bucket> findBucketById(long id) {
-		return bucketRepository.findById(id);
+	public Optional<Repository> findRepositoryById(long id) {
+		return repoRepository.findById(id);
 	}
 
-	public Optional<Bucket> findBucketByName(String name) {
-		Bucket bucket = bucketRepository.findByName(name);
+	public Optional<Repository> findRepositoryByName(String name) {
+		Repository repository = repoRepository.findByName(name);
 		
-		if (bucket != null) {
-			return Optional.of(bucket);
+		if (repository != null) {
+			return Optional.of(repository);
 		}
 		
 		return Optional.empty();
@@ -116,8 +116,8 @@ public class QueryService {
 		return Optional.empty();
 	}
 
-	public List<TutorialFile> findTutorialFilesByBucketId(Long bucketId) {
-		return fileRepository.findByBucketid(bucketId);
+	public List<TutorialFile> findTutorialFilesByRepositoryId(Long bucketId) {
+		return fileRepository.findByRepositoryid(bucketId);
 	}
 }
 

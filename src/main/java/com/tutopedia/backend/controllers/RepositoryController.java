@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tutopedia.backend.error.BucketDuplicateException;
-import com.tutopedia.backend.error.BucketNotFoundException;
-import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.error.RepositoryDuplicateException;
+import com.tutopedia.backend.error.RepositoryNotFoundException;
+import com.tutopedia.backend.persistence.model.Repository;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.services.CommandService;
@@ -30,9 +30,9 @@ import com.tutopedia.backend.services.QueryService;
 import jakarta.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping(path = "/api/bucket")
+@RequestMapping(path = "/api/repository")
 @CrossOrigin(origins = {"http://localhost:5173", "*"})
-public class BucketController {
+public class RepositoryController {
 	@Autowired
 	private CommandService commandService;
 
@@ -53,86 +53,86 @@ public class BucketController {
 	// FIND
 	@GetMapping("/find")
     @ResponseStatus(HttpStatus.OK)
-	public Iterable<Bucket> findAllBuckets() {
-		log("findAllBuckets");
+	public Iterable<Repository> findAllRepositories() {
+		log("findAllRepositories");
 		
-		return queryService.findAllBuckets();
+		return queryService.findAllRepositories();
 	}
 
 	@GetMapping("/find/{id}")
     @ResponseStatus(HttpStatus.OK)
-	public Bucket findBucketById(@PathVariable(name = "id") @NotNull Long id) {
-		log("findBucketById: " + id);
+	public Repository findRepositoryById(@PathVariable(name = "id") @NotNull Long id) {
+		log("findRepositoryById: " + id);
 		
-		return queryService.findBucketById(id).orElseThrow(BucketNotFoundException::new);
+		return queryService.findRepositoryById(id).orElseThrow(RepositoryNotFoundException::new);
 	}
 
 	// FIND
 	@GetMapping("/default")
     @ResponseStatus(HttpStatus.OK)
-	public Bucket findDefaultBucket() {
-		log("findDefaultBucket");
+	public Repository findDefaultRepository() {
+		log("findDefaultRepository");
 		
-		return queryService.findDefaultBucket().orElseThrow(BucketNotFoundException::new);
+		return queryService.findDefaultRepository().orElseThrow(RepositoryNotFoundException::new);
 	}
 
 	// UPDATE
 	@PutMapping("/default/{id}")
     @ResponseStatus(HttpStatus.OK)
-	public void updateDefaultBucket(@PathVariable(name = "id") @NotNull Long id) {
-		log("updateDefaultBucket");
+	public void updateDefaultRepository(@PathVariable(name = "id") @NotNull Long id) {
+		log("updateDefaultRepository");
 		
-		queryService.findBucketById(id).orElseThrow(BucketNotFoundException::new);
+		queryService.findRepositoryById(id).orElseThrow(RepositoryNotFoundException::new);
 		
-		commandService.updateDefaultBucketId(id);
+		commandService.updateDefaultRepositoryId(id);
 	}
 	
 	// CREATE
 	@PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-		public Bucket createBucket(@ModelAttribute @NotNull Bucket bucket) {
-		log("createBucket");
+		public Repository createRepository(@ModelAttribute @NotNull Repository repository) {
+		log("createRepository");
 		
-		Optional<Bucket> defaultBucket = queryService.findDefaultBucket();
-		if (defaultBucket.isEmpty()) {
-			bucket.setSelected(true);
+		Optional<Repository> defaultRepository = queryService.findDefaultRepository();
+		if (defaultRepository.isEmpty()) {
+			repository.setSelected(true);
 		}
 		
-		queryService.findBucketByName(bucket.getName()).ifPresent(s -> {
-            throw new BucketDuplicateException();
+		queryService.findRepositoryByName(repository.getName()).ifPresent(s -> {
+            throw new RepositoryDuplicateException();
         });
 		
-		return commandService.createBucket(bucket);
+		return commandService.createRepository(repository);
 	}
 
 	@DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-	public void deleteBucketById(@PathVariable(name="id") @NotNull Long id) {
-		log("deleteBucket: " + id);
+	public void deleteRepositoryById(@PathVariable(name="id") @NotNull Long id) {
+		log("deleteRepository: " + id);
     	
-		queryService.findBucketById(id).orElseThrow(BucketNotFoundException::new);
+		queryService.findRepositoryById(id).orElseThrow(RepositoryNotFoundException::new);
 		
-		commandService.deleteBucketById(id);
+		commandService.deleteRepositoryById(id);
     }
 
 	@DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-	public void deleteBuckets() {
-		log("deleteBuckets");
+	public void deleteRepositories() {
+		log("deleteRepositories");
     	
-		commandService.deleteAllBuckets();
+		commandService.deleteAllRepositories();
     }
 	
-	@GetMapping("/{bucket}")
+	@GetMapping("/{repository}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Tutorial> getBucketTutorials(@PathVariable(name="bucket") @NotNull String name) {
-		System.out.println("getBucketTutorials: " + name);
+	public List<Tutorial> getRepositoryTutorials(@PathVariable(name="repository") @NotNull String name) {
+		System.out.println("getRepositoryTutorials: " + name);
 
-		Bucket bucket = queryService.findBucketByName(name).orElseThrow(BucketNotFoundException::new);
-		List<TutorialFile> files = queryService.findTutorialFilesByBucketId(bucket.getId());
+		Repository repository = queryService.findRepositoryByName(name).orElseThrow(RepositoryNotFoundException::new);
+		List<TutorialFile> files = queryService.findTutorialFilesByRepositoryId(repository.getId());
 		List<Tutorial> tutorials = files.stream().map((TutorialFile file) -> (queryService.findTutorialByIdRaw(file.getTutorialId()))).toList();
 
-		System.out.println("getBucketTutorials FOUND " + tutorials.size());
+		System.out.println("getRepositoryTutorials FOUND " + tutorials.size());
 
 		return tutorials;
 	}

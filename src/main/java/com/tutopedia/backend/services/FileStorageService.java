@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tutopedia.backend.error.BucketNotFoundException;
+import com.tutopedia.backend.error.RepositoryNotFoundException;
 import com.tutopedia.backend.error.TutorialFileNotFoundException;
 import com.tutopedia.backend.error.TutorialNotFoundException;
-import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Repository;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
 import com.tutopedia.backend.persistence.repository.TutorialFileRepository;

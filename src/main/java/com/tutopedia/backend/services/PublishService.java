@@ -6,13 +6,13 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tutopedia.backend.error.BucketNotFoundException;
+import com.tutopedia.backend.error.RepositoryNotFoundException;
 import com.tutopedia.backend.error.TutorialFileNotFoundException;
 import com.tutopedia.backend.error.TutorialNotFoundException;
-import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Repository;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
-import com.tutopedia.backend.persistence.repository.BucketRepository;
+import com.tutopedia.backend.persistence.repository.RepositoryRepository;
 import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
 
@@ -23,7 +23,7 @@ public class PublishService {
 	private TutorialRepository tutorialRepository;
 	
 	@Autowired
-	private BucketRepository bucketRepository;
+	private RepositoryRepository repoRepository;
 
 	@Autowired
 	private TutorialFileRepository fileRepository;
@@ -32,26 +32,26 @@ public class PublishService {
 		if (! tutorial.isPublished()) {
 			// PUBLISH FILE HERE TO OCI
 			
-			Bucket bucket = bucketRepository.findBySelected(true);
-			if (bucket == null) {
-				throw new BucketNotFoundException();
+			Repository repository = repoRepository.findBySelected(true);
+			if (repository == null) {
+				throw new RepositoryNotFoundException();
 			}
 			
 			TutorialFile file = fileRepository.findByTutorialId(tutorial.getId());
 			if (file == null) {
 				throw new TutorialFileNotFoundException();
 			}
-			file.setBucketid(bucket.getId());
+			file.setRepositoryid(repository.getId());
 			
 			fileRepository.save(file);
 			
-			bucket.setTutorials(bucket.getTutorials()+1);
-			bucketRepository.save(bucket);
+			repository.setTutorials(repository.getTutorials()+1);
+			repoRepository.save(repository);
 			
 			tutorial.setPublished(true);
 			tutorialRepository.save(tutorial);
 			
-			System.out.println("PUBLSIHED: Tutorial = " + tutorial.getId() + " to Bucket = " + bucket.getName());
+			System.out.println("PUBLSIHED: Tutorial = " + tutorial.getId() + " to Repository = " + repository.getName());
 		}
 	}
 	
@@ -64,17 +64,17 @@ public class PublishService {
 				throw new TutorialFileNotFoundException();
 			}
 
-			Bucket bucket = bucketRepository.findById(file.getBucketid()).orElseThrow(BucketNotFoundException::new);
-			bucket.setTutorials(bucket.getTutorials() - 1);
+			Repository repository = repoRepository.findById(file.getRepositoryid()).orElseThrow(RepositoryNotFoundException::new);
+			repository.setTutorials(repository.getTutorials() - 1);
 			
-			file.setBucketid(null);
+			file.setRepositoryid(null);
 			tutorial.setPublished(false);
 			
 			tutorialRepository.save(tutorial);
-			bucketRepository.save(bucket);
+			repoRepository.save(repository);
 			fileRepository.save(file);
 			
-			System.out.println("UNPUBLSIHED: Tutorial = " + tutorial.getId() + " from Bucket = " + bucket.getName());
+			System.out.println("UNPUBLSIHED: Tutorial = " + tutorial.getId() + " from Repository = " + repository.getName());
 		}
 	}
 	

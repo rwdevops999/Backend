@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tutopedia.backend.persistence.data.TutorialWithFile;
-import com.tutopedia.backend.persistence.model.Bucket;
+import com.tutopedia.backend.persistence.model.Repository;
 import com.tutopedia.backend.persistence.model.Setting;
 import com.tutopedia.backend.persistence.model.Tutorial;
 import com.tutopedia.backend.persistence.model.TutorialFile;
-import com.tutopedia.backend.persistence.repository.BucketRepository;
+import com.tutopedia.backend.persistence.repository.RepositoryRepository;
 import com.tutopedia.backend.persistence.repository.SettingRepository;
 import com.tutopedia.backend.persistence.repository.TutorialFileRepository;
 import com.tutopedia.backend.persistence.repository.TutorialRepository;
@@ -21,7 +21,7 @@ public class CommandService {
 	private TutorialRepository tutorialRepository;
 
 	@Autowired
-	private BucketRepository bucketRepository;
+	private RepositoryRepository repoRepository;
 
 	@Autowired
 	private SettingRepository settingRepository;
@@ -57,25 +57,25 @@ public class CommandService {
 		tutorialRepository.deleteById(id);
 	}
 	
-	public void deleteAllBuckets() {
-		bucketRepository.deleteAll();
+	public void deleteAllRepositories() {
+		repoRepository.deleteAll();
 	}
 
-	public void deleteBucketById(long id) {
-		bucketRepository.deleteById(id);
+	public void deleteRepositoryById(long id) {
+		repoRepository.deleteById(id);
 	}
 
-	public Bucket saveBucket(Bucket bucket) {
-		return bucketRepository.save(bucket);
+	public Repository saveRepository(Repository repository) {
+		return repoRepository.save(repository);
 	}
 
-	public Bucket createBucket(Bucket bucket) {
-		return saveBucket(bucket);
+	public Repository createRepository(Repository repository) {
+		return saveRepository(repository);
 	}
 
-	public void updateDefaultBucketId(long id) {
-		bucketRepository.clearDefaultBuckets();
-		bucketRepository.updateDefaultBucketId(id);
+	public void updateDefaultRepositoryId(long id) {
+		repoRepository.clearDefaultRepositories();
+		repoRepository.updateDefaultRepositoryId(id);
 	}
 	
 	public void persistSetting(Setting setting) {

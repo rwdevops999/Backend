@@ -37,8 +37,8 @@ public class TutorialFile {
 
 	@Getter
 	@Setter
-	@Column(name = "bucketid")
-	private Long bucketid;
+	@Column(name = "repositoryid")
+	private Long repositoryid;
 	
 	public TutorialFile() {
 	}

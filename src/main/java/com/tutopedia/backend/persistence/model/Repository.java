@@ -17,11 +17,11 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "bucket", schema = "public")
-public class Bucket {
+@Table(name = "repository", schema = "public")
+public class Repository {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bucket_seq")
-	@SequenceGenerator(name = "bucket_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "repository_seq")
+	@SequenceGenerator(name = "repository_seq", allocationSize = 1)
 	@Getter
 	@Setter
 	private long id;
@@ -47,11 +47,11 @@ public class Bucket {
 	@Getter @Setter
 	private Date updateDate = new Date();
 
-	public Bucket(String name) {
+	public Repository(String name) {
 		this.name = name;
 	}
 
-	public Bucket(Long id, String name, Boolean selected) {
+	public Repository(Long id, String name, Boolean selected) {
 		this(name);
 		this.id = id;
 		this.selected = selected;
@@ -59,7 +59,7 @@ public class Bucket {
 
 	@Override
 	public String toString() {
-		return "Bucket "
+		return "Repository"
 				+ "["
 				+ "id=" + id 
 				+ ", name=" + name 

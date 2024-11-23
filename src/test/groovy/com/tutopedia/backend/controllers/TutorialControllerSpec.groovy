@@ -28,7 +28,6 @@ import org.springframework.web.util.UriComponentsBuilder
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.tutopedia.backend.BackendApplication
-import com.tutopedia.backend.persistence.model.Bucket
 import com.tutopedia.backend.persistence.model.Tutorial
 import com.tutopedia.backend.test.ClearContext
 import com.tutopedia.backend.test.TutorialTest
@@ -516,104 +515,5 @@ class TutorialControllerSpec extends Specification {
 			
 		then: "result should be NOT FOUND"
 			status == HttpStatus.SC_NOT_FOUND
-	}
-
-	@Ignore
-	def "when create bucket then OK"() {
-		given: "create new bucket instance"
-		  def bucket = createBucket();
-	
-		when: "create bucket through API"
-		  def status = sendRequest(Method.POST.name(), "$API_URL", "/bucket", bucket, true)
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_CREATED
-	}
-
-	@Ignore	
-	def "when find all bucket then OK"() {
-		given: "create bucket in database"
-  		  def id = createBucketAsId();
-	
-		when: "find all buckets through API"
-		  def status = sendRequest(Method.GET.name(), "$API_URL", "/bucket")
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}
-
-	@Ignore
-	def "when find bucket by id then OK"() {
-		given: "create bucket in database"
-  		  def id = createBucketAsId();
-	
-		when: "find all buckets through API"
-		  def status = sendRequest(Method.GET.name(), "$API_URL", "/bucket/" + id)
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}
-
-	@Ignore
-	def "when find bucket by id not in DB then NOT FOUND"() {
-		given: "create bucket in database"
-  		  def id = createBucketAsId();
-			println("CREATED ID = " + id);
-	
-		when: "find all buckets through API"
-			println("FIND ID = " + id+1);
-		  def status = sendRequest(Method.GET.name(), "$API_URL", "/bucket/" + id+1)
-  
-		then: "response status should be NOT_FOUND"
-			println("FIND STATUS = " + status);
-		  	status == HttpStatus.SC_NOT_FOUND
-	}
-
-	@Ignore	
-	def "when find default bucket then OK"() {
-		given: "create bucket in database"
-  		  createBucketAsId(true);
-	
-		when: "find default bucket through API"
-		  def status = sendRequest(Method.GET.name(), "$API_URL", "/bucket/default")
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}
-
-	@Ignore
-	def "when delete all buckets then OK"() {
-		given: "create bucket in database"
-  		  createBucketAsId();
-	
-		when: "delete all buckets through API"
-		  def status = sendRequest(Method.DELETE.name(), "$API_URL", "/bucket")
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}
-
-	@Ignore
-	def "when delete bucket with id then OK"() {
-		given: "create bucket in database"
-  		  def id = createBucketAsId();
-	
-		when: "delete bucket with id through API"
-		  def status = sendRequest(Method.DELETE.name(), "$API_URL", "/bucket/" + id)
-  
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}
-
-	@Ignore
-	def "when delete bucket with id not in DB then NOT_FOUND"() {
-		given: "create bucket in database"
-  		  def id = createBucketAsId();
-	
-		when: "delete bucket with id through API"
-		  def status = sendRequest(Method.DELETE.name(), "$API_URL", "/bucket/" + id+1)
-  
-		then: "response status should be NOT FOUND"
-		  	status == HttpStatus.SC_NOT_FOUND
 	}
 }
