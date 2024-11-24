@@ -64,7 +64,7 @@ pipeline {
 			
 			post {
 			    success {
-			    junit skipPublishingChecks: true, testResults: './test-results/TEST-*.xml'
+			    junit skipPublishingChecks: true, testResults: '**/test-results/TEST-*.xml'
 //			        junit testResults: '**/test-results/**/*.xml', skipPublishingChecks: true
 			    }
 
