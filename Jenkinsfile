@@ -36,6 +36,7 @@ pipeline {
 
 		stage("build") {
 			steps {
+				sh 'export spring_profiles_active=docker'	    
 				sh 'mvn install -DskipTests'	    
 			}
 			

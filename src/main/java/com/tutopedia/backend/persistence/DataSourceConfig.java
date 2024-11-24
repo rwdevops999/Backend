@@ -18,7 +18,7 @@ public class DataSourceConfig {
 	private String password;
 	
 //	@Value("${db_host:postgres}")
-	@Value("${db_host:postgres}")
+	@Value("${db_host:localhost}")
 	private String host;
 	
 	@Value("${db_port:5432}")
@@ -45,6 +45,30 @@ public class DataSourceConfig {
 	@Bean
     public DataSource getDataSource() {
 		System.out.println("===== INIT DEV DB =====");
+		System.out.println("USER     : " + user);
+		System.out.println("PASSWORD : " + password);
+		System.out.println("HOST     : " + host);
+		System.out.println("PORT     : " + port);
+		System.out.println("DATABASE : " + database);
+
+		String url="jdbc:postgresql://"+host+":"+port+"/"+database;
+		System.out.println("URL      : " + url);
+		
+		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.postgresql.Driver");
+        dataSourceBuilder.url(url);
+        dataSourceBuilder.username(user);
+        dataSourceBuilder.password(password);
+
+        return dataSourceBuilder.build();
+    }
+
+	@Profile("docker")
+	@Bean
+    public DataSource getDataSourceDocker() {
+		host = "postgres";
+		
+		System.out.println("===== INIT DEV DOCKER =====");
 		System.out.println("USER     : " + user);
 		System.out.println("PASSWORD : " + password);
 		System.out.println("HOST     : " + host);
