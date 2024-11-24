@@ -73,7 +73,7 @@ public class SettingController {
 		
 		String[] result = getValues(key);
 		
-		return queryService.findSettingByKeyAndType(result[0], result[1]).get();
+		return queryService.findSettingByKeyAndType(result[1], result[0]).get();
 	}
 
 	@GetMapping("/type/{type}")
