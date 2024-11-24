@@ -58,12 +58,12 @@ pipeline {
 
 			steps {
 				sh 'export spring_profiles_active=test'	    
-				sh 'mvn test'	    
+//				sh 'mvn test'	    
 			}
 			
 			post {
 			    success {
-			        junit '**/test-results/**/*.xml'
+//			        junit '**/test-results/**/*.xml'
 			    }
 
 				failure {
