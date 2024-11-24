@@ -17,6 +17,7 @@ public class DataSourceConfig {
 	@Value("${db_password:admin}")
 	private String password;
 	
+//	@Value("${db_host:postgres}")
 	@Value("${db_host:postgres}")
 	private String host;
 	
@@ -40,7 +41,7 @@ public class DataSourceConfig {
         return dataSource;
     }
 	
-	@Profile("dev")
+//	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
 		System.out.println("===== INIT DEV DB =====");

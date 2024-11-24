@@ -13,9 +13,7 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface SettingRepository extends CrudRepository<Setting, Long> {
-    @Modifying
-	@Transactional
-	@Query("select * from Settings s where s.key = :key and s.type = :type")
+	@Query("select s from Setting s where s.key = :key and s.type = :type")
 	Setting findByKeyAndType(String key, String type);
 	List<Setting> findByType(String type);
 }
