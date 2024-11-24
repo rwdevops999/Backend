@@ -10,7 +10,7 @@ import com.tutopedia.backend.services.oci.OsService;
 
 @Component
 public class StartupInit {
-	@Autowired
+/*	@Autowired
 	OsService osService;
 	
 	@PostConstruct
@@ -20,5 +20,5 @@ public class StartupInit {
 		} catch (Exception e) {
 			System.out.println("INIT EXCEPTION: " + e.getMessage());
 		}
-	}
+	} */
 }

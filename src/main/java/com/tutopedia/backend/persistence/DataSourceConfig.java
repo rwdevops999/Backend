@@ -44,7 +44,7 @@ public class DataSourceConfig {
         return dataSource;
     }
 	
-//	@Profile("dev")
+	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
 		host = "localhost";
