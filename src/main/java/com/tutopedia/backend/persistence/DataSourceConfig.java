@@ -17,8 +17,7 @@ public class DataSourceConfig {
 	@Value("${db_password:admin}")
 	private String password;
 	
-//	@Value("${db_host:postgres}")
-	@Value("${db_host:localhost}")
+	@Value("${db_host:postgres}")
 	private String host;
 	
 	@Value("${db_port:5432}")
@@ -27,7 +26,7 @@ public class DataSourceConfig {
 	@Value("${db_database:tutopedia_db}")
 	private String database;
 	
-//	@Profile("test")
+	@Profile("test")
 	@Bean
     public DataSource dataSource() {
 		System.out.println("===== INIT TEST DB =====");
@@ -45,9 +44,11 @@ public class DataSourceConfig {
         return dataSource;
     }
 	
-	@Profile("dev")
+//	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
+		host = "localhost";
+		
 		System.out.println("===== INIT DEV DB =====");
 		System.out.println("USER     : " + user);
 		System.out.println("PASSWORD : " + password);
