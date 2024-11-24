@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
 import org.springframework.http.MediaType
 import org.springframework.http.client.MultipartBodyBuilder
 import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
@@ -295,17 +296,6 @@ class TutorialControllerSpec extends Specification {
 		  	status == HttpStatus.SC_OK
 	}	
 
-/*	def "when find all published tutorials then OK"() {
-		given: "create published tutoiral"
-		  createTutorial(null, null, true);
-		  
-		when: "find all published tutorials through API"
-		  def status = sendRequest(Method.GET.name(), "$API_URL", "/find/published", null, buildMultiParam(["published": true]) )
-
-		then: "response status should be OK"
-		  	status == HttpStatus.SC_OK
-	}	
-*/
 	@Ignore
 	def "when find tutorial by id then OK"() {
 		given: "create tutorial in database"

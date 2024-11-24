@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,9 @@ public class SettingController {
 	@Autowired
 	private QueryService queryService;
 
+	@Autowired
+	private CommandService commandService;
+	
 	private void log(String command) {
 		Date currentDate = new Date();
 
@@ -84,5 +88,20 @@ public class SettingController {
 		}
 		
 		return settings;
+	}
+
+	@PutMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+	public void updateSetting(@RequestBody Setting setting) {
+		Optional<Setting> dbsetting = queryService.findSettingByKeyAndType(setting.getKey(), setting.getType());
+		
+		if (dbsetting.isEmpty()) {
+			commandService.persistSetting(setting);
+		} else {
+			Setting oldsetting = dbsetting.get();
+			
+			oldsetting.setValue(setting.getValue());
+			commandService.persistSetting(oldsetting);
+		}
 	}
 }

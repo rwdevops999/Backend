@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
 import org.springframework.http.MediaType
 import org.springframework.http.client.MultipartBodyBuilder
 import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
@@ -50,7 +51,9 @@ import spock.lang.Specification
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
+import org.junit.runner.RunWith
 
+@RunWith(SpringRunner.class)
 @SpringBootTest(
 	  webEnvironment = WebEnvironment.DEFINED_PORT,
 	  classes = BackendApplication.class)
@@ -258,8 +261,8 @@ class RepositoryControllerSpec extends Specification {
 		def multiPartHttpEntity = entitybuilder.build();
 		def reqbuilder = RequestBuilder.post("$API_URL/create");
 
-		reqbuilder.setEntity(multiPartHttpEntity);
 		HttpUriRequest multipartRequest = reqbuilder.build();
+		reqbuilder.setEntity(multiPartHttpEntity);
 		def response = httpclient.execute(multipartRequest);
 
 		def entity = response.getEntity();
