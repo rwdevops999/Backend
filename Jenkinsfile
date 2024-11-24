@@ -50,30 +50,30 @@ pipeline {
 
 		}
 		
-//		stage("test") {
-//			when {
-//			    expression {
-//    			   isValid
-//    			}
-//			}
+		stage("test") {
+			when {
+			    expression {
+    			   isValid
+    			}
+			}
 
-//			steps {
-//				sh 'export spring_profiles_active=test'	    
-//				sh 'mvn test'	    
-//			}
+			steps {
+				sh 'export spring_profiles_active=test'	    
+				sh 'mvn test'	    
+			}
 			
-//			post {
-//			    success {
-//			        junit '**/test-results/**/*.xml'
-//			    }
+			post {
+			    success {
+			        junit '**/test-results/**/*.xml'
+			    }
 
-//				failure {
-//				    script {
-//    				    isValid = false
-//    				}
-//				}
-//			}
-//		}
+				failure {
+				    script {
+    				    isValid = false
+    				}
+				}
+			}
+		}
 
 		stage("package") {
 			when {
