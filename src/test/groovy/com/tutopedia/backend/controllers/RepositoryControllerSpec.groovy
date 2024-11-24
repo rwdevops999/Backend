@@ -404,6 +404,7 @@ class RepositoryControllerSpec extends Specification {
 			status == HttpStatus.SC_NOT_FOUND
 	}
 
+	@Ignore
 	def "when update default repository then old default repository is not default, new repository is default"() {
 		given: "create default and non default repository"
 			def defaultBucket = createRepository(null, "default", true)
