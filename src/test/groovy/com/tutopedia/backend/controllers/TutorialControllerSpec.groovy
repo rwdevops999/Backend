@@ -33,7 +33,8 @@ class TutorialControllerSpec extends Specification {
 
 		API_URL = "$API_URI:$API_PORT$API_PATH"
 		
-		println "API_URL = + $API_URL" 
+		println "API_URL = + $API_URL"
+		 
 	}
 
 	def "when greetings then OK"() {
