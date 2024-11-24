@@ -27,10 +27,14 @@ public class DataSourceConfig {
 	@Value("${db_database:tutopedia_db}")
 	private String database;
 	
-	@Profile("test")
+//	@Profile("test")
 	@Bean
     public DataSource dataSource() {
 		System.out.println("===== INIT TEST DB =====");
+		System.out.println("USER     : " + "sa");
+		System.out.println("PASSWORD : " + "sa");
+		System.out.println("HOST     : " + "jdbc:h2:mem");
+		System.out.println("DATABASE : " + "tutopedia_db");
 		
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
@@ -41,7 +45,7 @@ public class DataSourceConfig {
         return dataSource;
     }
 	
-//	@Profile("dev")
+	@Profile("dev")
 	@Bean
     public DataSource getDataSource() {
 		System.out.println("===== INIT DEV DB =====");

@@ -1,0 +1,70 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <includeAll path="classpath:db/changelog-test"/>
+    <changeSet  author="rudi.welter"  id="loadUpdateDataTutorials" runOnChange="true">
+        <loadUpdateData
+              commentLineStartsWith="//"
+              encoding="UTF-8"
+              file="tutorials.csv"
+              onlyUpdate="false"
+              primaryKey="id"
+              quotchar="'"
+              relativeToChangelogFile="true"
+              schemaName="public"
+              separator=","
+              tableName="tutorial"
+              usePreparedStatements="true">
+            <column  header="id"
+                name="id"
+                type="NUMERIC"/>
+            <column  header="title"
+                name="title"
+                type="STRING"/>
+            <column  header="description"
+                name="description"
+                type="STRING"/>
+            <column  header="published"
+                name="published"
+                type="BOOLEAN"/>
+            <column  header="filename"
+                name="filename"
+                type="STRING"/>
+        </loadUpdateData>
+    </changeSet>
+    <changeSet  author="rudi.welter"  id="loadUpdateDataFiles" runOnChange="true">
+        <loadUpdateData
+              commentLineStartsWith="//"
+              encoding="UTF-8"
+              file="files.csv"
+              onlyUpdate="false"
+              primaryKey="id"
+              quotchar="'"
+              relativeToChangelogFile="true"
+              schemaName="public"
+              separator=","
+              tableName="file"
+              usePreparedStatements="true">
+            <column  header="id"
+                name="id"
+                type="NUMERIC"/>
+            <column  header="tid"
+                name="tid"
+                type="NUMERIC"/>
+            <column  header="type"
+                name="type"
+                type="STRING"/>
+            <column  header="tfile"
+                name="tfile"
+                type="BYTEA"/>
+        </loadUpdateData>
+    </changeSet>
+
+</databaseChangeLog>
