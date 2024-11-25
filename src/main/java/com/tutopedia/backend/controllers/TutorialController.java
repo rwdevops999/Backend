@@ -71,7 +71,7 @@ public class TutorialController {
 	}
 
 	
-	// FIND
+	// FIND (TESTED)
 	@GetMapping("/find")
     @ResponseStatus(HttpStatus.OK)
 	public Iterable<Tutorial> findAllTutorials() {
@@ -118,8 +118,8 @@ public class TutorialController {
 		
 	@GetMapping("/find/{id}")
     @ResponseStatus(HttpStatus.OK)
-	public Iterable<Tutorial>findTutorialsById(@PathVariable(name = "id") @NotNull Long id) {
-		log("findTutorialsById: " + id);
+	public Iterable<Tutorial> findTutorialById(@PathVariable(name = "id") @NotNull Long id) {
+		log("findTutorialById: " + id);
 		
 		List<Tutorial> list = new ArrayList<Tutorial>();
 		list.add( queryService.findTutorialById(id).orElseThrow(TutorialNotFoundException::new));
@@ -133,10 +133,8 @@ public class TutorialController {
 	public Tutorial createTutorial(@ModelAttribute @NotNull TutorialWithFile tutorialWithFile) {
 		log("createTutorial");
 
-		log("createTutorial1");
 		String fileName = StringUtils.cleanPath(tutorialWithFile.getTutorialFile().getOriginalFilename());
 
-		log("createTutorial2");
 		Tutorial tutorial = commandService.createTutorial(new Tutorial(
 			tutorialWithFile.getTitle(), 
 			tutorialWithFile.getDescription(), 

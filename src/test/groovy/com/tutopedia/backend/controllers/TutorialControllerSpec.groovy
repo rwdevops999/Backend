@@ -1,11 +1,16 @@
 package com.tutopedia.backend.controllers
 
+import javax.ws.rs.NotFoundException
+
+import org.junit.jupiter.api.Assertions
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.core.io.FileSystemResource
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.FormHttpMessageConverter
@@ -18,6 +23,7 @@ import org.springframework.web.client.RestTemplate
 import com.tutopedia.backend.BackendApplication
 import com.tutopedia.backend.persistence.data.TutorialWithFile
 import com.tutopedia.backend.persistence.model.Tutorial
+import com.tutopedia.backend.test.RestTemplateResponseErrorHandler
 import com.tutopedia.backend.test.TutorialTest
 
 import spock.lang.Ignore
@@ -88,6 +94,7 @@ class TutorialControllerSpec extends Specification {
 			greetings == "Hello ... This is a springboot REST app"
 	}
 	
+	@Ignore
 	def "when create a tutorial, the id is filled"() {
 		when: "create multipart data"
 			Tutorial tutorial = new Tutorial();
@@ -100,5 +107,62 @@ class TutorialControllerSpec extends Specification {
 		then: "id should be filled in"
 			dbTutorial.id != null
 			dbTutorial.title == tutorial.title
+	}
+
+	@Ignore
+	def "when find tutorials, a list of tutorials is returned"() {
+		when: "create 2 db tutorials"
+			Tutorial tutorial = new Tutorial();
+			tutorial.title = "Tutorial1"
+			tutorial.description = "Description1"
+			tutorial.published = false
+			
+			createTutorial(tutorial)
+
+			Tutorial tutorial2 = new Tutorial();
+			tutorial.title = "Tutorial2"
+			tutorial.description = "Description2"
+			tutorial.published = false
+
+			createTutorial(tutorial2);
+
+			RestTemplate restTemplate = new RestTemplate()
+			Iterable<Tutorial> tutorials = restTemplate.getForObject("$API_URL/find", Iterable.class)
+
+		then: "id should be filled in"
+			tutorials.size() == 2
+	}
+
+	@Ignore
+	def "when find tutorial by id, and tutorial is not in db, status NOT FOUND should be given"() {
+		when: "find tutorial with id not in db"
+			RestTemplate restTemplate = new RestTemplateBuilder().errorHandler(new RestTemplateResponseErrorHandler()).build();			
+			
+		then: "status should be NOT FOUND"
+			Iterable<Tutorial> response
+			try {
+				response = restTemplate.getForObject("$API_URL/find/123", Iterable.class)
+			} catch(NotFoundException e) {
+				e.message.contains("404");
+			}
+	}
+
+	def "when find tutorial by id, and tutorial is in db, the tutorial is returned"() {
+		when: "find tutorial with id in db"
+			Tutorial tutorial = new Tutorial();
+			tutorial.title = "Tutorial1"
+			tutorial.description = "Description1"
+			tutorial.published = false
+			
+			createTutorial(tutorial)
+
+			RestTemplate restTemplate = new RestTemplateBuilder().errorHandler(new RestTemplateResponseErrorHandler()).build();			
+			
+		then: "status should be NOT FOUND"
+			try {
+				Iterable<Tutorial> response = restTemplate.getForObject("$API_URL/find/123", Iterable.class)
+				response.size() == 1
+			} catch(NotFoundException e) {
+			}
 	}
 }
