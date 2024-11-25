@@ -61,7 +61,7 @@ public class TutorialController {
 		System.out.println("[" + currentDateTime + " : " + command + "]");
 	}
 
-	// GREETINGS
+	// GREETINGS (TESTED)
 	@GetMapping("/greetings")
     @ResponseStatus(HttpStatus.OK)
 	public String greetings() {
@@ -70,6 +70,7 @@ public class TutorialController {
 		return ("Hello ... This is a springboot REST app");	
 	}
 
+	
 	// FIND
 	@GetMapping("/find")
     @ResponseStatus(HttpStatus.OK)
@@ -126,14 +127,16 @@ public class TutorialController {
 		return list;
 	}
 	
-	// CREATE
+	// CREATE (TESTED)
 	@PostMapping(path = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
 	public Tutorial createTutorial(@ModelAttribute @NotNull TutorialWithFile tutorialWithFile) {
 		log("createTutorial");
 
+		log("createTutorial1");
 		String fileName = StringUtils.cleanPath(tutorialWithFile.getTutorialFile().getOriginalFilename());
 
+		log("createTutorial2");
 		Tutorial tutorial = commandService.createTutorial(new Tutorial(
 			tutorialWithFile.getTitle(), 
 			tutorialWithFile.getDescription(), 
