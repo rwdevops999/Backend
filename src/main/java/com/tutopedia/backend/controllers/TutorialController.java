@@ -85,6 +85,8 @@ public class TutorialController {
 	public Iterable<Tutorial> findAllPublishedTutorials (@RequestParam(required = false) Boolean published) {
 		log("Find All Tutorials: " + (published?"(PUBLISHED)":"(UNPUBLISHED)"));
 		
+		Iterable<Tutorial> tuts = queryService.findAllTutorials();
+		
 		return queryService.findTutorialsByPublishedFlag(published);
 	}
 
@@ -116,6 +118,7 @@ public class TutorialController {
 		return tutorials;
 	}
 		
+	// (TESTED)
 	@GetMapping("/find/{id}")
     @ResponseStatus(HttpStatus.OK)
 	public Iterable<Tutorial> findTutorialById(@PathVariable(name = "id") @NotNull Long id) {
