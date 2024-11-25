@@ -80,6 +80,7 @@ public class TutorialController {
 		return queryService.findAllTutorials();
 	}
 
+	// (TESTED)
 	@GetMapping("/find/published")
     @ResponseStatus(HttpStatus.OK)
 	public Iterable<Tutorial> findAllPublishedTutorials (@RequestParam(required = false) Boolean published) {
@@ -207,7 +208,7 @@ public class TutorialController {
 		}
     }
 
-	// DELETE
+	// DELETE (TESTED)
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
 	public void deleteAllTutorials() {

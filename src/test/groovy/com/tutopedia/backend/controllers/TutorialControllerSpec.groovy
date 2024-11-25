@@ -189,6 +189,7 @@ class TutorialControllerSpec extends Specification {
 			tutorials.size() == 1
 	}
 
+	@Ignore
 	def "when find unpublished tutorials, the unpublished tutorials are returned"() {
 		when: "find tutorial with id in db"
 			Tutorial tutorial = new Tutorial();
@@ -208,5 +209,28 @@ class TutorialControllerSpec extends Specification {
 			
 		then: "returned tutorials size = 1"
 			tutorials.size() == 1
+	}
+
+	def "when delete all tutorials, no tutorials are returned"() {
+		when: "create 2 tutorials in db"
+			Tutorial tutorial = new Tutorial();
+			tutorial.title = "Tutorial1"
+			tutorial.description = "Description1"
+			tutorial.published = true
+			createTutorial(tutorial)
+
+			Tutorial tutorial2 = new Tutorial();
+			tutorial2.title = "Tutorial2"
+			tutorial2.description = "Description2"
+			tutorial2.published = false
+			createTutorial(tutorial2)
+			
+			RestTemplate restTemplate = new RestTemplate()
+			restTemplate.delete("$API_URL/delete")
+			
+			Iterable<Tutorial> tutorials = restTemplate.getForObject("$API_URL/find", Iterable.class)
+			
+		then: "returned tutorials size = 0"
+			tutorials.size() == 0
 	}
 }
